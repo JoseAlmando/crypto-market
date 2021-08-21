@@ -1,27 +1,46 @@
 <template>
-  <div id="app">
-    <h1 class="m-4 text-3xl font-bold text-indigo-500">Crypto Market</h1>
-    <div class="flex shadow-md mb-5 text-xs w-11/12 mt-4 m-auto">
-      <span
-        class="bg-indigo-500 w-28 font-bold text-center text-gray-200 p-3 px-5 rounded-l"
-        >Search</span
-      ><input
-        class="field text-sm text-gray-600 p-2 px-3 rounded-r w-full"
-        type="text"
-        placeholder="Bitcoins, Ethereum, ..."
-        v-model="crypto_search"
+  <div id="app" class="flex flex-col h-screen">
+    <header>
+      <h1 class="m-4 text-3xl font-bold text-indigo-500">Crypto Market</h1>
+    </header>
+    <main class="mb-auto">
+      <div class="flex shadow-md mb-5 text-xs w-11/12 mt-4 m-auto">
+        <span
+          class="bg-indigo-500 w-28 font-bold text-center text-gray-200 p-3 px-5 rounded-l"
+          >Search</span
+        ><input
+          class="field text-sm text-gray-600 p-2 px-3 rounded-r w-full"
+          type="text"
+          placeholder="Bitcoins, Ethereum, ..."
+          v-model="crypto_search"
+        />
+      </div>
+      <Table
+        :titles="[
+          '#',
+          'Crypto',
+          'Price',
+          'Price change percentage 24h',
+          'Total volume',
+        ]"
+        :cryptos="crypto_copi"
       />
+    </main>
+
+    <div class="border-t-2 bg-indigo-500 text-center py-4 mt-2 text-white">
+      <p class="text-2xl">
+        <span class="font-semibold">|</span> This website was developed by
+        <a
+          href="https://github.com/JoseAlmando/"
+          class="text-red-300"
+          target="_blank"
+          rel="noreferrer"
+        >
+          José Almando Dominique
+        </a>
+        <span class="font-semibold">|</span>
+      </p>
     </div>
-    <Table
-      :titles="[
-        '#',
-        'Crypto',
-        'Price',
-        'Price change percentage 24h',
-        'Total volume',
-      ]"
-      :cryptos="crypto_copi"
-    />
   </div>
 </template>
 
