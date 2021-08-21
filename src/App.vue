@@ -1,28 +1,75 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1 class="m-4 text-3xl font-bold text-indigo-500">Crypto Market</h1>
+    <div class="flex shadow-md mb-5 text-xs w-11/12 mt-4 m-auto">
+      <span
+        class="bg-indigo-500 w-28 font-bold text-center text-gray-200 p-3 px-5 rounded-l"
+        >Search</span
+      ><input
+        class="field text-sm text-gray-600 p-2 px-3 rounded-r w-full"
+        type="text"
+        placeholder="Bitcoins, Ethereum, ..."
+        v-model="crypto_search"
+      />
+    </div>
+    <Table
+      :titles="[
+        '#',
+        'Crypto',
+        'Price',
+        'Price change percentage 24h',
+        'Total volume',
+      ]"
+      :cryptos="crypto_copi"
+    />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import axios from "axios";
+import Table from "./components/Table.vue";
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    Table,
+  },
+  data() {
+    return {
+      cryptos: [],
+      crypto_copi: [],
+      crypto_search: "",
+    };
+  },
+  mounted() {
+    axios
+      .get(
+        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=USD&order=market_cap_desc&per_page=100&page=1&sparkline=false"
+      )
+      .then((res) => {
+        this.cryptos = res.data;
+        this.crypto_copi = this.cryptos;
+      });
+  },
+  watch: {
+    crypto_search: function() {
+      this.crypto_copi = this.cryptos.filter(
+        (crypto) =>
+          crypto.name
+            .toLowerCase()
+            .includes(this.crypto_search.toLowerCase()) ||
+          crypto.symbol
+            .toLowerCase()
+            .includes(this.crypto_search.toLowerCase()) ||
+          crypto.id.toLowerCase().includes(this.crypto_search.toLowerCase())
+      );
+    },
+  },
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+body {
+  font-family: "Montserrat", sans-serif;
+  background: #f3f4f6;
 }
 </style>
